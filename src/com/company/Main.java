@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            /*
             Picture picture0 = new Picture(205, 255, new Color(0,0,0));
             PictureUtils.savePicture(picture0, "pictures/picture0.png");
 
@@ -42,6 +43,12 @@ public class Main {
 
             Picture picture9 = SimpleObjUtils.SimpleObjToPicture2(stormTrooper,1000,1000,250,500,500);
             PictureUtils.savePicture(PictureUtils.rotatePicture(picture9), "pictures/picture9.png");
+            */
+
+
+            SimpleObj test = SimpleObjUtils.SimpleObjFromFile("obj/deer.obj");
+            Picture pictureTest = SimpleObjUtils.SimpleObjToPicture2(test,1000,1000,0.6,500,0);
+            PictureUtils.savePicture(PictureUtils.rotatePicture(pictureTest), "pictures/pictureTest.png");
 
         } catch (Exception e){
             e.printStackTrace();
