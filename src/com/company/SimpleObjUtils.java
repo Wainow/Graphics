@@ -17,7 +17,7 @@ public class SimpleObjUtils {
         while (fileScanner.hasNextLine()) {
             str=fileScanner.nextLine();
             if(str.charAt(0)=='v'&&str.charAt(1)==' '){
-                lineScanner = new Scanner(str.substring(1));
+                lineScanner = new Scanner(str.substring(1)).useLocale(Locale.ENGLISH);
                 simpleObj.addCoord(new Coord(lineScanner.nextDouble(),lineScanner.nextDouble(),lineScanner.nextDouble()));
             }
             else if(str.charAt(0)=='f'){
