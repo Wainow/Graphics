@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class SimpleObjUtils {
