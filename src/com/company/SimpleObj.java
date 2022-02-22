@@ -2,9 +2,13 @@ package com.company;
 
 import java.util.ArrayList;
 
+// класс obj-объекта
 public class SimpleObj {
+
+    // массив координат вершин
     private ArrayList<Coord> coords;
 
+    // массив полигонов
     private ArrayList<Polygon> polygons;
 
     public SimpleObj(){

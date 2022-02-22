@@ -7,7 +7,9 @@ import java.io.IOException;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
+// методы для работы с картинкой
 public class PictureUtils {
+    // сохранение картинки в файл
     public static void savePicture(Picture picture, String filename) throws IOException {
         BufferedImage png = new BufferedImage(picture.getW(), picture.getH(), TYPE_INT_RGB);
         for(int i = 0; i < picture.getW(); i++) {
@@ -19,6 +21,7 @@ public class PictureUtils {
         ImageIO.write(png, "png", new File(filename));
     }
 
+    // заполнение картинки градиентом
     public static void drawGradient(Picture picture) {
         for(int i = 0; i < picture.getW(); i++) {
             for(int j = 0; j < picture.getH(); j++) {
@@ -28,10 +31,13 @@ public class PictureUtils {
         }
     }
 
+    // отрисовка одного пикселя
     public static void drawPixel(Picture picture, int x, int y, Color color) {
         picture.getColorArray()[x][y] = color;
     }
 
+
+    // первый способ отрисовки прямой
     public static void drawSimpleLine(Picture picture, int x0, int y0, int x1, int y1, Color color, double dt) {
         for(double t = 0.0; t < 1.0; t+= dt) {
             drawPixel(picture,
@@ -41,6 +47,8 @@ public class PictureUtils {
              );
         }
     }
+
+    // второй способ отрисовки прямой
     public static void drawSimpleLine2(Picture picture, int x0, int y0, int x1, int y1, Color color) {
         for(int x = x0; x < x1; x++) {
             double t = (x - x0) / (double)(x1 - x0);
@@ -51,6 +59,8 @@ public class PictureUtils {
              );
         }
     }
+
+    // третий способ отрисовки прямой
     public static void drawSimpleLine3(Picture picture, int x0, int y0, int x1, int y1, Color color) {
         boolean steep = false;
         if (Math.abs(x0-x1)<Math.abs(y0-y1)) {
@@ -87,6 +97,8 @@ public class PictureUtils {
             );
         }
     }
+
+    // итоговый способ отрисовки прямой
     public static void drawLine(Picture picture, int x0, int y0, int x1, int y1, Color color) {
         boolean steep = false;
         if (Math.abs(x0-x1)<Math.abs(y0-y1)) {
@@ -133,6 +145,8 @@ public class PictureUtils {
         }
     }
 
+
+    // отрисовка звезды 1
     public static void drawStar(Picture picture, Color color) {
         for(int i = 0; i < 13; i++) {
             double alpha = 2 * Math.PI * i / 13;
@@ -146,6 +160,8 @@ public class PictureUtils {
             );
         }
     }
+
+    // отрисовка звезды 2
     public static void drawStar2(Picture picture, Color color) {
         for(int i = 0; i < 13; i++) {
             double alpha = 2 * Math.PI * i / 13;
@@ -158,6 +174,8 @@ public class PictureUtils {
             );
         }
     }
+
+    // отрисовка звезды 3
     public static void drawStar3(Picture picture, Color color) {
         for(int i = 0; i < 13; i++) {
             double alpha = 2 * Math.PI * i / 13;
@@ -170,6 +188,8 @@ public class PictureUtils {
             );
         }
     }
+
+    // отрисовка звезды 4
     public static void drawStar4(Picture picture, Color color) {
         for(int i = 0; i < 13; i++) {
             double alpha = 2 * Math.PI * i / 13;
@@ -183,6 +203,8 @@ public class PictureUtils {
         }
     }
 
+
+    // поворот картинки на 180 градусов
     public static Picture rotatePicture(Picture picture){
         int w= picture.getW();
         int h= picture.getH();

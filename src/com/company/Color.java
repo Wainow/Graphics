@@ -1,5 +1,6 @@
 package com.company;
 
+// цвет - RGB
 public class Color {
     private int r;
     private int g;

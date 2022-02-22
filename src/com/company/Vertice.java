@@ -1,8 +1,12 @@
 package com.company;
 
+// вершина полигона
 public class Vertice {
+    // номер координаты вершины
     private int v;
+    // номер текстурной координаты
     private int vt;
+    // номер нормали
     private int vn;
 
     public Vertice(){

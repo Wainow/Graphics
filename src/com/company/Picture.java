@@ -1,9 +1,12 @@
 package com.company;
 
+// двумерное изображение
 public class Picture {
+    // размеры
     private int w;
     private int h;
 
+    // двумерный массив цветов
     private Color[][] colorArray;
 
     public Picture(int w, int h) {

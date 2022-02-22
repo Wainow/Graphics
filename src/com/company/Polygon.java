@@ -2,8 +2,10 @@ package com.company;
 
 import java.util.ArrayList;
 
+// полигон
 public class Polygon {
 
+    // массив вершин
     private ArrayList<Vertice> vertices;
 
     public Polygon(){
