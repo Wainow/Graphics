@@ -59,7 +59,7 @@ public class Main {
             */
 
 
-            ///*
+            /*
             // проверка суммы барицентрических координат
             Coord barycentricCoord = MathTools.barycentric(
                     10,10, new Coord(0.5, 5, 5.5), new Coord(-0.5, 500, -9.9));
@@ -90,11 +90,11 @@ public class Main {
             Picture picture3 = SimpleObjUtils.SimpleObjToPicture5(stormTrooper,1000,1000,250,500,500);
             PictureUtils.savePicture(PictureUtils.rotatePicture(picture3), "pictures/lab2/picture3.png");
 
+            */
+
             // z-буффер
             Picture picture4 = SimpleObjUtils.SimpleObjToPicture6(stormTrooper,1000,1000,250,500,500);
             PictureUtils.savePicture(PictureUtils.rotatePicture(picture4), "pictures/lab2/picture4.png");
-
-            //*/
 
         } catch (Exception e){
             e.printStackTrace();
