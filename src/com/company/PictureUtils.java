@@ -41,8 +41,8 @@ public class PictureUtils {
     public static void drawSimpleLine(Picture picture, int x0, int y0, int x1, int y1, Color color, double dt) {
         for(double t = 0.0; t < 1.0; t+= dt) {
             drawPixel(picture,
-                    (int)(x0 * (1-t) + x1 * t),
-                    (int)(y0 * (1-t) + y1 * t),
+                    (int)Math.round(x0 * (1-t) + x1 * t),
+                    (int)Math.round(y0 * (1-t) + y1 * t),
                     color
              );
         }
@@ -54,7 +54,7 @@ public class PictureUtils {
             double t = (x - x0) / (double)(x1 - x0);
             drawPixel(picture,
                     x,
-                    (int) (y0 * (1-t) + y1 * t),
+                    (int)Math.round(y0 * (1-t) + y1 * t),
                     color
              );
         }
@@ -82,7 +82,7 @@ public class PictureUtils {
         }
         for(int x = x0; x < x1; x++) {
             double t = (x - x0) / (double)(x1 - x0);
-            int y=(int) (y0 * (1-t) + y1 * t);
+            int y=(int)Math.round(y0 * (1-t) + y1 * t);
             if (steep)
                 drawPixel(picture,
                     y,
@@ -153,8 +153,8 @@ public class PictureUtils {
             drawSimpleLine(
                     picture,
                     100, 100,
-                    (int) (100 + 95 * Math.cos(alpha)),
-                    (int) (100 + 95 * Math.sin(alpha)),
+                    (int)Math.round(100 + 95 * Math.cos(alpha)),
+                    (int)Math.round(100 + 95 * Math.sin(alpha)),
                     color,
                     0.1
             );
@@ -168,8 +168,8 @@ public class PictureUtils {
             drawSimpleLine2(
                     picture,
                     100, 100,
-                    (int) (100 + 95 * Math.cos(alpha)),
-                    (int) (100 + 95 * Math.sin(alpha)),
+                    (int)Math.round(100 + 95 * Math.cos(alpha)),
+                    (int)Math.round(100 + 95 * Math.sin(alpha)),
                     color
             );
         }
@@ -182,8 +182,8 @@ public class PictureUtils {
             drawSimpleLine3(
                     picture,
                     100, 100,
-                    (int) (100 + 95 * Math.cos(alpha)),
-                    (int) (100 + 95 * Math.sin(alpha)),
+                    (int)Math.round(100 + 95 * Math.cos(alpha)),
+                    (int)Math.round(100 + 95 * Math.sin(alpha)),
                     color
             );
         }
@@ -196,8 +196,8 @@ public class PictureUtils {
             drawLine(
                     picture,
                     100, 100,
-                    (int) (100 + 95 * Math.cos(alpha)),
-                    (int) (100 + 95 * Math.sin(alpha)),
+                    (int)Math.round(100 + 95 * Math.cos(alpha)),
+                    (int)Math.round(100 + 95 * Math.sin(alpha)),
                     color
             );
         }
@@ -214,5 +214,51 @@ public class PictureUtils {
             for (int j=0; j< h; j++)
                 drawPixel(ansPicture, i, j, colors[w-i-1][h-j-1]);
         return ansPicture;
+    }
+
+
+    // отрисовка треугольника
+    public static Picture drawTriangle(Picture picture, Coord xtri, Coord ytri, Color color){
+        int xmin = (int)Math.round(Math.min(xtri.getX(), Math.min(xtri.getY(), xtri.getZ())));
+        int ymin = (int)Math.round(Math.min(ytri.getX(), Math.min(ytri.getY(), ytri.getZ())));
+        int xmax = (int)Math.round(Math.max(xtri.getX(), Math.max(xtri.getY(), xtri.getZ())))+1;
+        int ymax = (int)Math.round(Math.max(ytri.getX(), Math.max(ytri.getY(), ytri.getZ())))+1;
+        if(xmin<0) xmin=0;
+        if(xmax> picture.getW()) xmax=picture.getW();
+        if(ymin<0) ymin=0;
+        if(ymax> picture.getH()) ymax=picture.getH();
+        for(int i=xmin; i<xmax; i++)
+            for(int j=ymin; j<ymax; j++){
+                Coord coord=MathTools.barycentric(i,j,xtri,ytri);
+                if(coord.getX()>=0&&coord.getY()>=0&&coord.getZ()>=0)
+                    drawPixel(picture,i,j,color);
+            }
+        return picture;
+    }
+
+
+    // отрисовка треугольника с z-буффером
+    public static Picture drawTriangleZ(Picture picture, Coord xtri, Coord ytri, Coord ztri, Color color){
+        int xmin = (int)Math.round(Math.min(xtri.getX(), Math.min(xtri.getY(), xtri.getZ())));
+        int ymin = (int)Math.round(Math.min(ytri.getX(), Math.min(ytri.getY(), ytri.getZ())));
+        int xmax = (int)Math.round(Math.max(xtri.getX(), Math.max(xtri.getY(), xtri.getZ())))+1;
+        int ymax = (int)Math.round(Math.max(ytri.getX(), Math.max(ytri.getY(), ytri.getZ())))+1;
+        if(xmin<0) xmin=0;
+        if(xmax> picture.getW()) xmax=picture.getW();
+        if(ymin<0) ymin=0;
+        if(ymax> picture.getH()) ymax=picture.getH();
+        double z=0;
+        for(int i=xmin; i<xmax; i++)
+            for(int j=ymin; j<ymax; j++){
+                Coord coord=MathTools.barycentric(i,j,xtri,ytri);
+                if(coord.getX()>=0&&coord.getY()>=0&&coord.getZ()>=0){
+                    z=-(coord.getX()* ztri.getX()+ coord.getY()* ztri.getY()+ coord.getZ()* ztri.getZ());
+                    if(z<picture.getZbuf(i,j)){
+                        drawPixel(picture,i,j,color);
+                        picture.setZbuf(i,j,z);
+                    }
+                }
+            }
+        return picture;
     }
 }

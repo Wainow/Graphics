@@ -9,11 +9,19 @@ public class Picture {
     // двумерный массив цветов
     private Color[][] colorArray;
 
+    // z-буффер
+    private double[][] zbuf;
+
+
     public Picture(int w, int h) {
         this.w = w;
         this.h = h;
         colorArray = new Color[w][h];
         initArray();
+        zbuf=new double[w][h];
+        for(int i=0;i<w;i++)
+            for(int j=0;j<h;j++)
+                zbuf[i][j]=Math.pow(10,4);
     }
 
     public Picture(int w, int h, Color color) {
@@ -21,6 +29,10 @@ public class Picture {
         this.h = h;
         colorArray = new Color[w][h];
         initArray(color);
+        zbuf=new double[w][h];
+        for(int i=0;i<w;i++)
+            for(int j=0;j<h;j++)
+                zbuf[i][j]=Math.pow(10,4);
     }
 
     public void setW(int w){
@@ -46,6 +58,10 @@ public class Picture {
     public Color[][] getColorArray(){
         return colorArray;
     }
+
+    public double getZbuf(int i, int j){return zbuf[i][j];}
+
+    public void setZbuf(int i, int j, double z){this.zbuf[i][j]=z;}
 
     private void initArray() { initArray(null); }
 
