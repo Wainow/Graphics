@@ -142,7 +142,7 @@ public class SimpleObjUtils {
                 int v2=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
                 PictureUtils.drawTriangle(picture,
                         new Coord(coords.get(v0).getX()*scale+xShift, (coords.get(v1).getX()*scale+xShift), (coords.get(v2).getX()*scale+xShift)),
-                        new Coord(coords.get(v0).getY()*scale+xShift, (coords.get(v1).getY()*scale+xShift), (coords.get(v2).getY()*scale+xShift)),
+                        new Coord(coords.get(v0).getY()*scale+yShift, (coords.get(v1).getY()*scale+yShift), (coords.get(v2).getY()*scale+yShift)),
                         new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             }
         }
@@ -166,7 +166,7 @@ public class SimpleObjUtils {
                 if(MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1))<0)
                     PictureUtils.drawTriangle(picture,
                             new Coord(coords.get(v0).getX()*scale+xShift, (coords.get(v1).getX()*scale+xShift), (coords.get(v2).getX()*scale+xShift)),
-                            new Coord(coords.get(v0).getY()*scale+xShift, (coords.get(v1).getY()*scale+xShift), (coords.get(v2).getY()*scale+xShift)),
+                            new Coord(coords.get(v0).getY()*scale+yShift, (coords.get(v1).getY()*scale+yShift), (coords.get(v2).getY()*scale+yShift)),
                             new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
             }
         }
@@ -191,7 +191,7 @@ public class SimpleObjUtils {
                 if(normal<0)
                     PictureUtils.drawTriangle(picture,
                             new Coord(coords.get(v0).getX()*scale+xShift, (coords.get(v1).getX()*scale+xShift), (coords.get(v2).getX()*scale+xShift)),
-                            new Coord(coords.get(v0).getY()*scale+xShift, (coords.get(v1).getY()*scale+xShift), (coords.get(v2).getY()*scale+xShift)),
+                            new Coord(coords.get(v0).getY()*scale+yShift, (coords.get(v1).getY()*scale+yShift), (coords.get(v2).getY()*scale+yShift)),
                             new Color((int)Math.round(-200*normal), (int)Math.round(-200*normal), (int)Math.round(-200*normal)));
             }
         }
@@ -212,15 +212,67 @@ public class SimpleObjUtils {
                 int v1=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
                 int v2=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
                 double normal=MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1));
-                if(normal<0)
+                                if(normal<0)
                     PictureUtils.drawTriangleZ(picture,
                             new Coord(coords.get(v0).getX()*scale+xShift, (coords.get(v1).getX()*scale+xShift), (coords.get(v2).getX()*scale+xShift)),
-                            new Coord(coords.get(v0).getY()*scale+xShift, (coords.get(v1).getY()*scale+xShift), (coords.get(v2).getY()*scale+xShift)),
+                            new Coord(coords.get(v0).getY()*scale+yShift, (coords.get(v1).getY()*scale+yShift), (coords.get(v2).getY()*scale+yShift)),
                             new Coord(coords.get(v0).getZ()*scale, (coords.get(v1).getZ()*scale), (coords.get(v2).getZ()*scale)),
                             new Color((int)Math.round(-200*normal), (int)Math.round(-200*normal), (int)Math.round(-200*normal)));
             }
         }
         return picture;
+    }
+
+    // проективное преобразование
+    public static Picture SimpleObjToPicture7(SimpleObj simpleObj, int w, int h, double ax, double ay, double x0, double y0, double zShift){
+        Picture picture=new Picture(w,h);
+        ArrayList<Coord> coords=simpleObj.getCoords();
+        ArrayList<Polygon> polygons= simpleObj.getPolygons();
+        // проходим по всем полигонам
+        for(int i=0; i<polygons.size();i++){
+            ArrayList<Vertice> vertices = polygons.get(i).getVertices();
+            // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
+            int v0=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
+            for(int j=1; j<vertices.size()-1; j++){
+                int v2=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                int v1=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                double normal=MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1));
+                if(normal<0){
+                    double z0=coords.get(v0).getZ()+zShift;
+                    double z1=coords.get(v1).getZ()+zShift;
+                    double z2=coords.get(v2).getZ()+zShift;
+                    PictureUtils.drawTriangleZ(picture,
+                            new Coord(coords.get(v0).getX()*ax/z0+x0, coords.get(v1).getX()*ax/z1+x0, coords.get(v2).getX()*ax/z2+x0),
+                            new Coord(coords.get(v0).getY()*ax/z0+y0, coords.get(v1).getY()*ax/z1+y0, coords.get(v2).getY()*ax/z2+y0),
+                            new Coord(z0, z1, z2),
+                            new Color((int)Math.round(-200*normal), (int)Math.round(-200*normal), (int)Math.round(-200*normal)));
+                }
+            }
+        }
+        return picture;
+    }
+
+    // поворот объекта
+    public static void RotateSimpleObj(SimpleObj simpleObj, double alpha, double beta, double gamma){
+        double sa=Math.sin(alpha);
+        double ca=Math.cos(alpha);
+        double sb=Math.sin(beta);
+        double cb=Math.cos(beta);
+        double sg=Math.sin(gamma);
+        double cg=Math.cos(gamma);
+        double x=0, y=0, z=0;
+        ArrayList<Coord> origCoords=simpleObj.getCoords();
+        ArrayList<Coord> newCoords=new ArrayList<Coord>();
+        for (int i=0; i< origCoords.size(); i++){
+            x=origCoords.get(i).getX();
+            y=origCoords.get(i).getY();
+            z=origCoords.get(i).getZ();
+            newCoords.add(new Coord(
+                    x*cb*cg+y*cb*sg+z*sb,
+                    x*(-sa*sb*cg-ca*sg)+y*(-sa*sb*sg+ca*cg)+z*sa*cb,
+                    x*(-ca*sb*cg+sa*sg)+y*(-ca*sb*sg-sa*cg)+z*ca*cb
+                    ));}
+        simpleObj.setCoords(newCoords);
     }
 
 }

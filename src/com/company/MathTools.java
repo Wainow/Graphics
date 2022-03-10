@@ -28,9 +28,9 @@ public class MathTools {
         double z1=c1.getZ();
         double z2=c2.getZ();
         return new Coord(
-                (y1-y0)*(z1-z2)-(z1-z0)*(y1-y2),
-                (x1-x2)*(z1-z0)-(x1-x0)*(z1-z2),
-                (x1-x0)*(y1-y2)-(x1-x2)*(y1-y0)
+                (y2-y0)*(z1-z0)-(z2-z0)*(y1-y0),
+                (x1-x0)*(z2-z0)-(x2-x0)*(z1-z0),
+                (x2-x0)*(y1-y0)-(x1-x0)*(y2-y0)
         );
     }
 

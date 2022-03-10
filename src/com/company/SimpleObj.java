@@ -24,6 +24,8 @@ public class SimpleObj {
         coords.add(coord);
     }
 
+    public void setCoords(ArrayList<Coord> coords){ this.coords=coords;}
+
     public ArrayList<Polygon> getPolygons() {
         return polygons;
     }

@@ -252,7 +252,7 @@ public class PictureUtils {
             for(int j=ymin; j<ymax; j++){
                 Coord coord=MathTools.barycentric(i,j,xtri,ytri);
                 if(coord.getX()>=0&&coord.getY()>=0&&coord.getZ()>=0){
-                    z=-(coord.getX()* ztri.getX()+ coord.getY()* ztri.getY()+ coord.getZ()* ztri.getZ());
+                    z=coord.getX()* ztri.getX()+ coord.getY()* ztri.getY()+ coord.getZ()* ztri.getZ();
                     if(z<picture.getZbuf(i,j)){
                         drawPixel(picture,i,j,color);
                         picture.setZbuf(i,j,z);
