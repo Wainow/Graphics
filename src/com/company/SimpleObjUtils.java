@@ -161,8 +161,8 @@ public class SimpleObjUtils {
             // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
             int v0=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
             for(int j=1; j<vertices.size()-1; j++){
-                int v1=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
-                int v2=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                int v2=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                int v1=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
                 if(MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1))<0)
                     PictureUtils.drawTriangle(picture,
                             new Coord(coords.get(v0).getX()*scale+xShift, (coords.get(v1).getX()*scale+xShift), (coords.get(v2).getX()*scale+xShift)),
@@ -185,8 +185,8 @@ public class SimpleObjUtils {
             // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
             int v0=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
             for(int j=1; j<vertices.size()-1; j++){
-                int v1=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
-                int v2=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                int v2=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                int v1=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
                 double normal=MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1));
                 if(normal<0)
                     PictureUtils.drawTriangle(picture,
@@ -209,8 +209,8 @@ public class SimpleObjUtils {
             // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
             int v0=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
             for(int j=1; j<vertices.size()-1; j++){
-                int v1=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
-                int v2=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                int v2=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                int v1=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
                 double normal=MathTools.normDotProduct(MathTools.normal(coords.get(v0),coords.get(v1),coords.get(v2)),new Coord(0,0,1));
                                 if(normal<0)
                     PictureUtils.drawTriangleZ(picture,

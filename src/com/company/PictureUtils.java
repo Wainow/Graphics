@@ -33,7 +33,8 @@ public class PictureUtils {
 
     // отрисовка одного пикселя
     public static void drawPixel(Picture picture, int x, int y, Color color) {
-        picture.getColorArray()[x][y] = color;
+        int h= picture.getH();
+        picture.getColorArray()[x][h-y-1] = color;
     }
 
 

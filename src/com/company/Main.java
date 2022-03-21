@@ -53,11 +53,11 @@ public class Main {
             /*
             // все вершины
             Picture picture8 = SimpleObjUtils.SimpleObjToPicture1(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture8), "pictures/lab1/picture8.png");
+            PictureUtils.savePicture(picture8, "pictures/lab1/picture8.png");
 
             // все рёбра всех полигонов
             Picture picture9 = SimpleObjUtils.SimpleObjToPicture2(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture9), "pictures/lab1/picture9.png");
+            PictureUtils.savePicture(picture9, "pictures/lab1/picture9.png");
             */
 
 
@@ -83,33 +83,33 @@ public class Main {
 
             // все полигоны случайным цветом
             Picture picture1 = SimpleObjUtils.SimpleObjToPicture3(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture1), "pictures/lab2/picture1.png");
+            PictureUtils.savePicture(picture1, "pictures/lab2/picture1.png");
 
             // полигоны без нелицевых граней
             Picture picture2 = SimpleObjUtils.SimpleObjToPicture4(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture2), "pictures/lab2/picture2.png");
+            PictureUtils.savePicture(picture2, "pictures/lab2/picture2.png");
 
             // базовое освещение
             Picture picture3 = SimpleObjUtils.SimpleObjToPicture5(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture3), "pictures/lab2/picture3.png");
+            PictureUtils.savePicture(picture3, "pictures/lab2/picture3.png");
 
             // z-буффер
             Picture picture4 = SimpleObjUtils.SimpleObjToPicture6(stormTrooper,1000,1000,250,500,500);
-            PictureUtils.savePicture(PictureUtils.rotatePicture(picture4), "pictures/lab2/picture4.png");
+            PictureUtils.savePicture(picture4, "pictures/lab2/picture4.png");
             */
 
 
             //lab3
             /*
-            */
             // проективное преобразование
             Picture picture0 = SimpleObjUtils.SimpleObjToPicture7(stormTrooper,1000,1000,900, 900,500,500, 5);
             PictureUtils.savePicture(picture0, "pictures/lab3/picture0.png");
 
             // с поворотом
-            SimpleObjUtils.RotateSimpleObj(stormTrooper,1.05*Math.PI,0.3,0);
+            SimpleObjUtils.RotateSimpleObj(stormTrooper,-0.05*Math.PI,0.93*Math.PI,0);
             Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(stormTrooper,1000,1000,900, 900,500,500, 5);
             PictureUtils.savePicture(picture1, "pictures/lab3/picture1.png");
+            */
 
         } catch (Exception e){
             e.printStackTrace();
