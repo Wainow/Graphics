@@ -48,7 +48,7 @@ public class Main {
             */
 
             // получаем объект 3д-модели из файла
-            //SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
+            SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
 
             /*
             // все вершины
@@ -112,17 +112,20 @@ public class Main {
             */
 
 
+            //extra
+            /*
             // получаем объект 3д-модели из файла
             SimpleObj fox = SimpleObjUtils.SimpleObjFromFile("obj/fox.obj");
             SimpleObjUtils.RotateSimpleObj(fox,0,0.75*Math.PI,0);
             Picture picture0 = SimpleObjUtils.SimpleObjToPicture7(fox,1000,1000,600, 600,500,0, 100);
-            PictureUtils.savePicture(picture0, "pictures/fox.png");
+            PictureUtils.savePicture(picture0, "pictures/extra/fox.png");
 
             // получаем объект 3д-модели из файла
             SimpleObj deer = SimpleObjUtils.SimpleObjFromFile("obj/deer.obj");
             SimpleObjUtils.RotateSimpleObj(deer,0,0.25*Math.PI,0);
             Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(deer,1000,1000,1000, 1000,500,0, 2000);
-            PictureUtils.savePicture(picture1, "pictures/deer.png");
+            PictureUtils.savePicture(picture1, "pictures/extra/deer.png");
+             */
 
         } catch (Exception e){
             e.printStackTrace();
