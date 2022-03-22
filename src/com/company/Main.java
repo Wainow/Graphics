@@ -107,9 +107,22 @@ public class Main {
 
             // с поворотом
             SimpleObjUtils.RotateSimpleObj(stormTrooper,-0.05*Math.PI,0.93*Math.PI,0);
-            Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(stormTrooper,1000,1000,900, 900,500,500, 5);
+            Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(stormTrooper,1000,1000,1100, 1100,500,500, 6);
             PictureUtils.savePicture(picture1, "pictures/lab3/picture1.png");
             */
+
+
+            // получаем объект 3д-модели из файла
+            SimpleObj fox = SimpleObjUtils.SimpleObjFromFile("obj/fox.obj");
+            SimpleObjUtils.RotateSimpleObj(fox,0,0.25*Math.PI,0);
+            Picture picture0 = SimpleObjUtils.SimpleObjToPicture7(fox,1000,1000,600, 600,500,0, 100);
+            PictureUtils.savePicture(picture0, "pictures/fox.png");
+
+            // получаем объект 3д-модели из файла
+            SimpleObj deer = SimpleObjUtils.SimpleObjFromFile("obj/deer.obj");
+            SimpleObjUtils.RotateSimpleObj(deer,0,0.25*Math.PI,0);
+            Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(deer,1000,1000,1000, 1000,500,0, 2000);
+            PictureUtils.savePicture(picture1, "pictures/deer.png");
 
         } catch (Exception e){
             e.printStackTrace();
