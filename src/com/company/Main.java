@@ -48,7 +48,7 @@ public class Main {
             */
 
             // получаем объект 3д-модели из файла
-            SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
+            //SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
 
             /*
             // все вершины
@@ -114,7 +114,7 @@ public class Main {
 
             // получаем объект 3д-модели из файла
             SimpleObj fox = SimpleObjUtils.SimpleObjFromFile("obj/fox.obj");
-            SimpleObjUtils.RotateSimpleObj(fox,0,0.25*Math.PI,0);
+            SimpleObjUtils.RotateSimpleObj(fox,0,0.75*Math.PI,0);
             Picture picture0 = SimpleObjUtils.SimpleObjToPicture7(fox,1000,1000,600, 600,500,0, 100);
             PictureUtils.savePicture(picture0, "pictures/fox.png");
 

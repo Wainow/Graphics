@@ -69,6 +69,14 @@ public class SimpleObjUtils {
                         currInt=currInt*10+currChar-'0';
                 }
                 // после считывания строки сохраняем последнюю вершину при необходимости
+                if(currInt!=0){
+                    if(isNeg) currInt*=-1;
+                    // понимаем, за какой компонент вершины отвечает данное число
+                    if(k==0) v=currInt;
+                    else if(k==1) vt=currInt;
+                    else vn=currInt;
+                    currInt=0;
+                }
                 if(v!=0)
                     currPolygon.addVertice(new Vertice(v, vt, vn));
                 // добавляем полигон в список полигонов
