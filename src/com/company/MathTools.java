@@ -102,8 +102,7 @@ public class MathTools {
     }
 
     //обратная матрица
-    public static double[][] inversion(double[][] A, int N)
-    {
+    public static double[][] inversion(double[][] A, int N) {
         double temp;
 
         double[][] E = new double[N][N];

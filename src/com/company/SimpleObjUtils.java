@@ -29,6 +29,12 @@ public class SimpleObjUtils {
                 // считываем трёхмерные координаты
                 simpleObj.addCoord(new Coord(lineScanner.nextDouble(),lineScanner.nextDouble(),lineScanner.nextDouble()));
             }
+            // если это строка нормали
+            if(str.charAt(0)=='v'&&str.charAt(1)=='n'){
+                lineScanner = new Scanner(str.substring(2)).useLocale(Locale.ENGLISH);
+                // считываем трёхмерные координаты
+                simpleObj.addNormal(new Coord(lineScanner.nextDouble(),lineScanner.nextDouble(),lineScanner.nextDouble()));
+            }
             // если это строка полигона
             else if(str.charAt(0)=='f'){
                 Polygon currPolygon=new Polygon();
@@ -260,7 +266,7 @@ public class SimpleObjUtils {
         return picture;
     }
 
-    // проективное преобразование
+    // камера, свет
     public static Picture SimpleObjToPicture8(SimpleObj simpleObj, int w, int h, Camera camera, Light light){
         double ex=1/Math.tan(camera.getXAngle()/2);
         double ey=1/Math.tan(camera.getYAngle()/2);
@@ -272,9 +278,6 @@ public class SimpleObjUtils {
         Coord xe=MathTools.rotate(new Coord(1,0,0), camera.getAlpha(), camera.getBeta(), 0);
         Coord ye=MathTools.rotate(new Coord(0,1,0), camera.getAlpha(), camera.getBeta(), 0);
         Coord ze=MathTools.rotate(new Coord(0,0,1), camera.getAlpha(), camera.getBeta(), 0);
-        System.out.println(xe.getX()+" "+xe.getY()+" "+xe.getZ());
-        System.out.println(ye.getX()+" "+ye.getY()+" "+ye.getZ());
-        System.out.println(ze.getX()+" "+ze.getY()+" "+ze.getZ());
         A[0][0]=xe.getX(); A[0][1]=ye.getX(); A[0][2]=ze.getX();
         A[1][0]=xe.getY(); A[1][1]=ye.getY(); A[1][2]=ze.getY();
         A[2][0]=xe.getZ(); A[2][1]=ye.getZ(); A[2][2]=ze.getZ();
@@ -314,6 +317,72 @@ public class SimpleObjUtils {
                     }
 
                     PictureUtils.drawTriangleZ2(picture, tri, new Color((int)Math.round(255*brightness)));
+                }
+            }
+        }
+        return picture;
+    }
+
+    // тонировка Гуро
+    public static Picture SimpleObjToPicture9(SimpleObj simpleObj, int w, int h, Camera camera, Light light){
+        double ex=1/Math.tan(camera.getXAngle()/2);
+        double ey=1/Math.tan(camera.getYAngle()/2);
+        double n=camera.getN();
+        double f=camera.getF();
+        Coord camDirection=MathTools.rotate(new Coord(0,0,1), camera.getAlpha(), camera.getBeta(),0);
+
+        double[][] A=new double[3][3];
+        Coord xe=MathTools.rotate(new Coord(1,0,0), camera.getAlpha(), camera.getBeta(), 0);
+        Coord ye=MathTools.rotate(new Coord(0,1,0), camera.getAlpha(), camera.getBeta(), 0);
+        Coord ze=MathTools.rotate(new Coord(0,0,1), camera.getAlpha(), camera.getBeta(), 0);
+        A[0][0]=xe.getX(); A[0][1]=ye.getX(); A[0][2]=ze.getX();
+        A[1][0]=xe.getY(); A[1][1]=ye.getY(); A[1][2]=ze.getY();
+        A[2][0]=xe.getZ(); A[2][1]=ye.getZ(); A[2][2]=ze.getZ();
+
+        double[][] AInv=MathTools.inversion(A,3);
+
+        double[][] newO = new double[3][1];
+        newO[0][0]=camera.getPosition().getX();
+        newO[1][0]=camera.getPosition().getY();
+        newO[2][0]=camera.getPosition().getZ();
+
+        double[][] oldO = MathTools.matMul(MathTools.scalMul(AInv,3,3,-1),newO, 3, 3, 1);
+
+        Picture picture=new Picture(w,h);
+        ArrayList<Coord> coords=simpleObj.getCoords();
+        ArrayList<Coord> normals=simpleObj.getNormals();
+        ArrayList<Polygon> polygons= simpleObj.getPolygons();
+        // проходим по всем полигонам
+        for(int i=0; i<polygons.size();i++){
+            ArrayList<Vertice> vertices = polygons.get(i).getVertices();
+            // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
+            int[] v=new int[3];
+            int[] vn=new int[3];
+            v[0]=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
+            vn[0]=vertices.get(0).getVn()>0?vertices.get(0).getVn()-1:coords.size()+vertices.get(0).getVn();
+            for(int j=1; j<vertices.size()-1; j++){
+                v[2]=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                v[1]=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                vn[2]=vertices.get(j).getVn()>0?vertices.get(j).getVn()-1:coords.size()+vertices.get(j).getVn();
+                vn[1]=vertices.get(j+1).getVn()>0?vertices.get(j+1).getVn()-1:coords.size()+vertices.get(j+1).getVn();
+                Coord normal=MathTools.normal(coords.get(v[0]),coords.get(v[1]),coords.get(v[2]));
+                Coord[] vNormals=new Coord[3];
+                double[] brightness=new double[3];
+                for(int k=0; k<3; k++){
+                    vNormals[k]=normals.get(vn[k]);
+                    brightness[k]=-MathTools.normDotProduct(vNormals[k],light.getDirection())*light.getBrightness();
+                }
+                if(MathTools.normDotProduct(normal,camDirection)<=2){
+                    Coord[] tri=new Coord[3];
+                    for(int k=0; k<3; k++){
+                        Coord coord=MathTools.ncs(coords.get(v[k]),AInv,oldO);
+                        tri[k]=new Coord();
+                        tri[k].setX((1+ex*coord.getX()/coord.getZ())*w/2);
+                        tri[k].setY((1+ey*coord.getY()/coord.getZ())*w/2);
+                        tri[k].setZ((f+n)/(f-n)-2*f*n/((f-n)*coord.getZ()));
+                    }
+
+                    PictureUtils.drawTriangleZ3(picture, tri, brightness);
                 }
             }
         }
