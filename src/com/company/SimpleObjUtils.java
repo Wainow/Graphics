@@ -260,26 +260,73 @@ public class SimpleObjUtils {
         return picture;
     }
 
+    // проективное преобразование
+    public static Picture SimpleObjToPicture8(SimpleObj simpleObj, int w, int h, Camera camera, Light light){
+        double ex=1/Math.tan(camera.getXAngle()/2);
+        double ey=1/Math.tan(camera.getYAngle()/2);
+        double n=camera.getN();
+        double f=camera.getF();
+        Coord camDirection=MathTools.rotate(new Coord(0,0,1), camera.getAlpha(), camera.getBeta(),0);
+
+        double[][] A=new double[3][3];
+        Coord xe=MathTools.rotate(new Coord(1,0,0), camera.getAlpha(), camera.getBeta(), 0);
+        Coord ye=MathTools.rotate(new Coord(0,1,0), camera.getAlpha(), camera.getBeta(), 0);
+        Coord ze=MathTools.rotate(new Coord(0,0,1), camera.getAlpha(), camera.getBeta(), 0);
+        System.out.println(xe.getX()+" "+xe.getY()+" "+xe.getZ());
+        System.out.println(ye.getX()+" "+ye.getY()+" "+ye.getZ());
+        System.out.println(ze.getX()+" "+ze.getY()+" "+ze.getZ());
+        A[0][0]=xe.getX(); A[0][1]=ye.getX(); A[0][2]=ze.getX();
+        A[1][0]=xe.getY(); A[1][1]=ye.getY(); A[1][2]=ze.getY();
+        A[2][0]=xe.getZ(); A[2][1]=ye.getZ(); A[2][2]=ze.getZ();
+
+        double[][] AInv=MathTools.inversion(A,3);
+
+        double[][] newO = new double[3][1];
+        newO[0][0]=camera.getPosition().getX();
+        newO[1][0]=camera.getPosition().getY();
+        newO[2][0]=camera.getPosition().getZ();
+
+        double[][] oldO = MathTools.matMul(MathTools.scalMul(AInv,3,3,-1),newO, 3, 3, 1);
+
+        Picture picture=new Picture(w,h);
+        ArrayList<Coord> coords=simpleObj.getCoords();
+        ArrayList<Polygon> polygons= simpleObj.getPolygons();
+        // проходим по всем полигонам
+        for(int i=0; i<polygons.size();i++){
+            ArrayList<Vertice> vertices = polygons.get(i).getVertices();
+            // рисуем все треугольники с двумя соседними вершинами и нулевой вершиной
+            int[] v=new int[3];
+            v[0]=vertices.get(0).getV()>0?vertices.get(0).getV()-1:coords.size()+vertices.get(0).getV();
+            for(int j=1; j<vertices.size()-1; j++){
+                v[2]=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                v[1]=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                Coord normal=MathTools.normal(coords.get(v[0]),coords.get(v[1]),coords.get(v[2]));
+                double brightness=-MathTools.normDotProduct(normal,light.getDirection())* light.getBrightness();
+                if(brightness<0) brightness=0;
+                if(MathTools.normDotProduct(normal,camDirection)<=0){
+                    Coord[] tri=new Coord[3];
+                    for(int k=0; k<3; k++){
+                        Coord coord=MathTools.ncs(coords.get(v[k]),AInv,oldO);
+                        tri[k]=new Coord();
+                        tri[k].setX((1+ex*coord.getX()/coord.getZ())*w/2);
+                        tri[k].setY((1+ey*coord.getY()/coord.getZ())*w/2);
+                        tri[k].setZ((f+n)/(f-n)-2*f*n/((f-n)*coord.getZ()));
+                    }
+
+                    PictureUtils.drawTriangleZ2(picture, tri, new Color((int)Math.round(255*brightness)));
+                }
+            }
+        }
+        return picture;
+    }
+
     // поворот объекта
     public static void RotateSimpleObj(SimpleObj simpleObj, double alpha, double beta, double gamma){
-        double sa=Math.sin(alpha);
-        double ca=Math.cos(alpha);
-        double sb=Math.sin(beta);
-        double cb=Math.cos(beta);
-        double sg=Math.sin(gamma);
-        double cg=Math.cos(gamma);
-        double x=0, y=0, z=0;
         ArrayList<Coord> origCoords=simpleObj.getCoords();
         ArrayList<Coord> newCoords=new ArrayList<Coord>();
         for (int i=0; i< origCoords.size(); i++){
-            x=origCoords.get(i).getX();
-            y=origCoords.get(i).getY();
-            z=origCoords.get(i).getZ();
-            newCoords.add(new Coord(
-                    x*cb*cg+y*cb*sg+z*sb,
-                    x*(-sa*sb*cg-ca*sg)+y*(-sa*sb*sg+ca*cg)+z*sa*cb,
-                    x*(-ca*sb*cg+sa*sg)+y*(-ca*sb*sg-sa*cg)+z*ca*cb
-                    ));}
+            newCoords.add(MathTools.rotate(origCoords.get(i),alpha,beta,gamma));
+        }
         simpleObj.setCoords(newCoords);
     }
 

@@ -112,6 +112,21 @@ public class Main {
             */
 
 
+            //lab4
+            ///*
+            Camera camera=new Camera(
+                    new Coord(1.5,-1.5,4),
+                    Math.PI*-0.1, -Math.PI*1.12,
+                    Math.PI*0.35, Math.PI*0.35,
+                    1, 10);
+            Light light=new Light(new Coord(0.5,-0.8,-1),0.7);
+            //light.setDirection(MathTools.rotate(new Coord(0,0,1),camera.getAlpha(),camera.getBeta(),0));
+            Picture picture0 = SimpleObjUtils.SimpleObjToPicture8(stormTrooper,1000,1000,camera, light);
+            PictureUtils.savePicture(picture0, "pictures/lab4/picture0.png");
+
+            //*/
+
+
             //extra
             /*
             // получаем объект 3д-модели из файла

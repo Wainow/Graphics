@@ -5,6 +5,7 @@ public class Picture {
     // размеры
     private int w;
     private int h;
+    private static double z0=Math.pow(10,4);
 
     // двумерный массив цветов
     private Color[][] colorArray;
@@ -21,7 +22,7 @@ public class Picture {
         zbuf=new double[w][h];
         for(int i=0;i<w;i++)
             for(int j=0;j<h;j++)
-                zbuf[i][j]=Math.pow(10,4);
+                zbuf[i][j]=z0;
     }
 
     public Picture(int w, int h, Color color) {
@@ -32,7 +33,7 @@ public class Picture {
         zbuf=new double[w][h];
         for(int i=0;i<w;i++)
             for(int j=0;j<h;j++)
-                zbuf[i][j]=Math.pow(10,4);
+                zbuf[i][j]=z0;
     }
 
     public void setW(int w){

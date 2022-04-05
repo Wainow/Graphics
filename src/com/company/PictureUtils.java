@@ -262,4 +262,30 @@ public class PictureUtils {
             }
         return picture;
     }
+
+
+    // последняя отрисовка треугольника
+    public static Picture drawTriangleZ2(Picture picture, Coord[] tri, Color color){
+        int xmin = (int)Math.round(Math.min(tri[0].getX(), Math.min(tri[1].getX(), tri[2].getX())));
+        int ymin = (int)Math.round(Math.min(tri[0].getY(), Math.min(tri[1].getY(), tri[2].getY())));
+        int xmax = (int)Math.round(Math.max(tri[0].getX(), Math.max(tri[1].getX(), tri[2].getX())))+1;
+        int ymax = (int)Math.round(Math.max(tri[0].getY(), Math.max(tri[1].getY(), tri[2].getY())))+1;
+        if(xmin<0) xmin=0;
+        if(xmax> picture.getW()) xmax=picture.getW();
+        if(ymin<0) ymin=0;
+        if(ymax> picture.getH()) ymax=picture.getH();
+        double z=0;
+        for(int i=xmin; i<xmax; i++)
+            for(int j=ymin; j<ymax; j++){
+                Coord coord=MathTools.barycentric(i,j,new Coord(tri[0].getX(),tri[1].getX(),tri[2].getX()),new Coord(tri[0].getY(),tri[1].getY(),tri[2].getY()));
+                if(coord.getX()>=0&&coord.getY()>=0&&coord.getZ()>=0){
+                    z=coord.getX()* tri[0].getZ()+ coord.getY()* tri[1].getZ()+ coord.getZ()* tri[2].getZ();
+                    if(z>=-1&&z<=1&&z<picture.getZbuf(i,j)){
+                        drawPixel(picture,i,j,color);
+                        picture.setZbuf(i,j,z);
+                    }
+                }
+            }
+        return picture;
+    }
 }

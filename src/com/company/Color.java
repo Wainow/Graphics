@@ -18,6 +18,12 @@ public class Color {
         this.g = g;
     }
 
+    public Color(int a) {
+        this.b = a;
+        this.r = a;
+        this.g = a;
+    }
+
     public int getR() {
         return r;
     }
