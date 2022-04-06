@@ -150,10 +150,10 @@ public class MathTools {
 
     //точка в новой системе координат
     public static Coord ncs(Coord coord, double[][] a, double[][] o){
-        double[][] oldCoord=new double[3][1];
-        oldCoord[0][0]=coord.getX();
-        oldCoord[1][0]=coord.getY();
-        oldCoord[2][0]=coord.getZ();
+        double[][] oldCoord=new double[][]{
+            {coord.getX()},
+            {coord.getY()},
+            {coord.getZ()}};
 
         double[][] rez=matSum(matMul(a,oldCoord,3,3,1),o,3,1);
 

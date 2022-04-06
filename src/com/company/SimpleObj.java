@@ -11,12 +11,16 @@ public class SimpleObj {
     // массив нормалей вершин
     private ArrayList<Coord> normals;
 
+    // массив координат текстуры
+    private ArrayList<Coord2> tCoords;
+
     // массив полигонов
     private ArrayList<Polygon> polygons;
 
     public SimpleObj(){
         coords=new ArrayList<Coord>();
         normals=new ArrayList<Coord>();
+        tCoords=new ArrayList<Coord2>();
         polygons=new ArrayList<Polygon>();
     }
 
@@ -36,6 +40,14 @@ public class SimpleObj {
 
     public void addNormal(Coord normal) {
         normals.add(normal);
+    }
+
+    public ArrayList<Coord2> gettCoords() {
+        return tCoords;
+    }
+
+    public void addTCoord(Coord2 tCoord) {
+        tCoords.add(tCoord);
     }
 
     public void setNormals(ArrayList<Coord> normals) {

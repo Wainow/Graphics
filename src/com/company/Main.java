@@ -48,7 +48,7 @@ public class Main {
             */
 
             // получаем объект 3д-модели из файла
-            SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
+            //SimpleObj stormTrooper = SimpleObjUtils.SimpleObjFromFile("obj/StormTrooper.obj");
 
             /*
             // все вершины
@@ -126,7 +126,9 @@ public class Main {
 
             */
 
+
             //extra
+            //deer and fox
             /*
             // получаем объект 3д-модели из файла
             SimpleObj fox = SimpleObjUtils.SimpleObjFromFile("obj/fox.obj");
@@ -140,6 +142,35 @@ public class Main {
             Picture picture1 = SimpleObjUtils.SimpleObjToPicture7(deer,1000,1000,1000, 1000,500,0, 2000);
             PictureUtils.savePicture(picture1, "pictures/extra/deer.png");
              */
+            //knife
+            /*
+            // получаем объект 3д-модели из файла
+            SimpleObj knife = SimpleObjUtils.SimpleObjFromFile("obj/knife/Knife.obj");
+            Camera camera=new Camera(
+                    new Coord(2,2,-2),
+                    Math.PI*0.15, Math.PI*0.25,
+                    Math.PI*0.35, Math.PI*0.35,
+                    1, 30);
+            Light light=new Light(new Coord(0,0,1), new Color(200,200,200));
+            light.setDirection(MathTools.rotate(new Coord(0,0,1),camera.getAlpha(),camera.getBeta(),0));
+            Picture picture0 = SimpleObjUtils.SimpleObjToPicture10(knife,5000,5000,camera, light, "obj/knife/texture.jpg");
+            PictureUtils.savePicture(picture0, "pictures/extra/knife.png");
+            */
+            //duck
+            ///*
+            // получаем объект 3д-модели из файла
+            SimpleObj duck = SimpleObjUtils.SimpleObjFromFile("obj/duck/duck.obj");
+            SimpleObjUtils.RotateSimpleObj(duck,Math.PI*-0.5,0,0);
+            Camera camera=new Camera(
+                    new Coord(-15,50,30),
+                    Math.PI*-0.14, Math.PI*0.2,
+                    Math.PI*0.45, Math.PI*0.45,
+                    1, 150);
+            Light light=new Light(new Coord(1,-2,-1), new Color(200,200,200));
+            //light.setDirection(MathTools.rotate(new Coord(0,0,-1),camera.getAlpha(),camera.getBeta(),0));
+            Picture picture0 = SimpleObjUtils.SimpleObjToPicture10(duck,2000,2000,camera, light, "obj/duck/texture.jpg");
+            PictureUtils.savePicture(picture0, "pictures/extra/duck.png");
+            //*/
 
         } catch (Exception e){
             e.printStackTrace();

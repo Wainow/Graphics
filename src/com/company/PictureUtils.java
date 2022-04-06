@@ -21,6 +21,28 @@ public class PictureUtils {
         ImageIO.write(png, "png", new File(filename));
     }
 
+    // загрузка картинки из файла
+    public static Picture loadPicture(String filename) throws IOException {
+        File file = new File(filename);
+        BufferedImage pic = ImageIO.read(file);
+        int w=pic.getWidth();
+        int h=pic.getHeight();
+        Picture rez=new Picture(w,h);
+        Color[][] colorArray=rez.getColorArray();
+        for(int i = 0; i < w; i++) {
+            for(int j = 0; j < h; j++) {
+                java.awt.Color color=new java.awt.Color(pic.getRGB(i,j));
+                colorArray[i][j]=new Color(color.getRed(),color.getGreen(),color.getBlue());
+            }
+        }
+        return rez;
+    }
+
+    // получения цвета по координатам
+    public static Color getColor(Picture picture, int x, int y){
+        return picture.getColorArray()[x][picture.getH()-y-1];
+    }
+
     // заполнение картинки градиентом
     public static void drawGradient(Picture picture) {
         for(int i = 0; i < picture.getW(); i++) {
@@ -291,7 +313,7 @@ public class PictureUtils {
 
 
     // отрисовка треугольника с тонировкой Гуро
-    public static Picture drawTriangleZ3(Picture picture, Coord[] tri, double[] brightness){
+    public static Picture drawTriangleZ3(Picture picture, Coord[] tri, double[] brightness, Color color){
         int xmin = (int)Math.round(Math.min(tri[0].getX(), Math.min(tri[1].getX(), tri[2].getX())));
         int ymin = (int)Math.round(Math.min(tri[0].getY(), Math.min(tri[1].getY(), tri[2].getY())));
         int xmax = (int)Math.round(Math.max(tri[0].getX(), Math.max(tri[1].getX(), tri[2].getX())))+1;
@@ -309,7 +331,43 @@ public class PictureUtils {
                     if(z>=-1&&z<=1&&z<picture.getZbuf(i,j)){
                         double currBrightness=coord.getX()*brightness[0]+ coord.getY()*brightness[1]+ coord.getZ()*brightness[2];
                         if(currBrightness<0) currBrightness=0;
-                        drawPixel(picture,i,j,new Color((int)Math.round(255*currBrightness)));
+                        drawPixel(picture,i,j,new Color((int)Math.round(color.getR()*currBrightness),(int)Math.round(color.getG()*currBrightness),(int)Math.round(color.getB()*currBrightness)));
+                        picture.setZbuf(i,j,z);
+                    }
+                }
+            }
+        return picture;
+    }
+
+
+    // отрисовка треугольника с текстурой
+    public static Picture drawTriangleZ4(Picture picture, Coord[] tri, double[] brightness, Color color, Coord2[] tCoords, Picture texture){
+        int xmin = (int)Math.round(Math.min(tri[0].getX(), Math.min(tri[1].getX(), tri[2].getX())));
+        int ymin = (int)Math.round(Math.min(tri[0].getY(), Math.min(tri[1].getY(), tri[2].getY())));
+        int xmax = (int)Math.round(Math.max(tri[0].getX(), Math.max(tri[1].getX(), tri[2].getX())))+1;
+        int ymax = (int)Math.round(Math.max(tri[0].getY(), Math.max(tri[1].getY(), tri[2].getY())))+1;
+        if(xmin<0) xmin=0;
+        if(xmax> picture.getW()) xmax=picture.getW();
+        if(ymin<0) ymin=0;
+        if(ymax> picture.getH()) ymax=picture.getH();
+        double z=0;
+        for(int i=xmin; i<xmax; i++)
+            for(int j=ymin; j<ymax; j++){
+                Coord coord=MathTools.barycentric(i,j,
+                        new Coord(tri[0].getX(),tri[1].getX(),tri[2].getX()),
+                        new Coord(tri[0].getY(),tri[1].getY(),tri[2].getY()));
+                if(coord.getX()>=0&&coord.getY()>=0&&coord.getZ()>=0){
+                    z=coord.getX()*tri[0].getZ() + coord.getY()*tri[1].getZ() + coord.getZ()*tri[2].getZ();
+                    if(z>=-1&&z<=1&&z<picture.getZbuf(i,j)){
+                        int x=(int)Math.round((coord.getX()*tCoords[0].getX()+coord.getY()*tCoords[1].getX()+coord.getZ()*tCoords[2].getX())*(texture.getW()-1));
+                        int y=(int)Math.round((coord.getX()*tCoords[0].getY()+coord.getY()*tCoords[1].getY()+coord.getZ()*tCoords[2].getY())*(texture.getH()-1));
+                        Color tColor=getColor(texture, x, y);
+                        double currBrightness=coord.getX()*brightness[0]+ coord.getY()*brightness[1]+ coord.getZ()*brightness[2];
+                        if(currBrightness<0) currBrightness=0;
+                        drawPixel(picture,i,j,new Color(
+                                (int)Math.round(tColor.getR()*color.getR()*currBrightness/255),
+                                (int)Math.round(tColor.getG()*color.getG()*currBrightness/255),
+                                (int)Math.round(tColor.getB()*color.getB()*currBrightness/255)));
                         picture.setZbuf(i,j,z);
                     }
                 }

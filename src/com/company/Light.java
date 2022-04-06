@@ -2,16 +2,16 @@ package com.company;
 
 public class Light {
     private Coord direction;
-    private double brightness;
+    private Color color;
 
     public Light(){
         this.direction=new Coord(0,0,1);
-        this.brightness=1;
+        this.color=new Color(255);
     }
 
-    public Light(Coord direction, double brightness){
+    public Light(Coord direction, Color color){
         this.direction=direction;
-        this.brightness=brightness;
+        this.color=color;
     }
 
     public Coord getDirection() {
@@ -22,11 +22,11 @@ public class Light {
         this.direction = direction;
     }
 
-    public double getBrightness() {
-        return brightness;
+    public Color getColor() {
+        return color;
     }
 
-    public void setBrightness(double brightness) {
-        this.brightness = brightness;
+    public void setColor(Color color) {
+        this.color = color;
     }
 }
