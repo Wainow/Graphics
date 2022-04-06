@@ -436,12 +436,12 @@ public class SimpleObjUtils {
             vn[0]=vertices.get(0).getVn()>0?vertices.get(0).getVn()-1:normals.size()+vertices.get(0).getVn();
             vt[0]=vertices.get(0).getVt()>0?vertices.get(0).getVt()-1:tCoords.size()+vertices.get(0).getVt();
             for(int j=1; j<vertices.size()-1; j++){
-                v[1]=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
-                v[2]=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
-                vn[1]=vertices.get(j).getVn()>0?vertices.get(j).getVn()-1:normals.size()+vertices.get(j).getVn();
-                vn[2]=vertices.get(j+1).getVn()>0?vertices.get(j+1).getVn()-1:normals.size()+vertices.get(j+1).getVn();
-                vt[1]=vertices.get(j).getVt()>0?vertices.get(j).getVt()-1:tCoords.size()+vertices.get(j).getVt();
-                vt[2]=vertices.get(j+1).getVt()>0?vertices.get(j+1).getVt()-1:tCoords.size()+vertices.get(j+1).getVt();
+                v[2]=vertices.get(j).getV()>0?vertices.get(j).getV()-1:coords.size()+vertices.get(j).getV();
+                v[1]=vertices.get(j+1).getV()>0?vertices.get(j+1).getV()-1:coords.size()+vertices.get(j+1).getV();
+                vn[2]=vertices.get(j).getVn()>0?vertices.get(j).getVn()-1:normals.size()+vertices.get(j).getVn();
+                vn[1]=vertices.get(j+1).getVn()>0?vertices.get(j+1).getVn()-1:normals.size()+vertices.get(j+1).getVn();
+                vt[2]=vertices.get(j).getVt()>0?vertices.get(j).getVt()-1:tCoords.size()+vertices.get(j).getVt();
+                vt[1]=vertices.get(j+1).getVt()>0?vertices.get(j+1).getVt()-1:tCoords.size()+vertices.get(j+1).getVt();
                 Coord normal=MathTools.normal(coords.get(v[0]),coords.get(v[1]),coords.get(v[2]));
                 Coord[] triNormals=new Coord[3];
                 Coord2[] triTCoords=new Coord2[3];
@@ -451,7 +451,7 @@ public class SimpleObjUtils {
                     triNormals[k]=normals.get(vn[k]);
                     brightness[k]=-MathTools.normDotProduct(triNormals[k],light.getDirection());
                 }
-                if(MathTools.normDotProduct(normal,camDirection)<=2){
+                if(MathTools.normDotProduct(normal,camDirection)<=1){
                     Coord[] tri=new Coord[3];
                     for(int k=0; k<3; k++){
                         Coord coord=MathTools.ncs(coords.get(v[k]),AInv,oldO);
