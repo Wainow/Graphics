@@ -1,14 +1,20 @@
 package com.company;
 
+// класс камеры в трёхмерном пространстве
 public class Camera {
+    // положение камеры
     private Coord position;
 
+    // угол наклона камеры вверх-вниз
     private double alpha;
+    // угол поворота камеры вокруг вертикальной оси
     private double beta;
 
+    // горизонтальный и вертикальный углы объектива камеры
     private double xAngle;
     private double yAngle;
 
+    // расстояние до передней и задней плоскостей. объекты за их пределами не отображаются
     private double n;
     private double f;
 

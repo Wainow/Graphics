@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 
-// полигон
+// класс полигона
 public class Polygon {
 
     // массив вершин

@@ -1,6 +1,6 @@
 package com.company;
 
-// вершина полигона
+// класс вершины полигона
 public class Vertice {
     // номер координаты вершины
     private int v;

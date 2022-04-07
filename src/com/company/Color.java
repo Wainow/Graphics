@@ -1,7 +1,8 @@
 package com.company;
 
-// цвет - RGB
+// класс цвета
 public class Color {
+    // значение каждой компоненты должно лежать в [0,255]
     private int r;
     private int g;
     private int b;

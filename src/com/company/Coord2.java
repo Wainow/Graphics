@@ -1,6 +1,6 @@
 package com.company;
 
-// трёхмерная вещественная координата
+// класс двумерной вещественной координаты
 public class Coord2 {
     private double x;
     private double y;

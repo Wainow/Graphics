@@ -1,5 +1,6 @@
 package com.company;
 
+// математические методы
 public class MathTools {
     // барицентрические координаты точки для данного треугольника
     public static Coord barycentric(int x, int y, Coord xtri, Coord ytri){
@@ -34,7 +35,7 @@ public class MathTools {
         );
     }
 
-    // нормализованное скалярное произведение
+    // нормализованное скалярное произведение. -1 - противонаправлены, 0 - перпендикулярны, 1 - сонаправлены
     public static double normDotProduct(Coord n, Coord v){
         double nx=n.getX();
         double ny=n.getY();
@@ -45,7 +46,7 @@ public class MathTools {
         return (nx* vx+ny*vy+nz*vz)/Math.sqrt((nx*nx+ny*ny+nz*nz)*(vx*vx+vy*vy+vz*vz));
     }
 
-    //поворот точки относительно другой точки
+    // поворот точки вокруг всех осей. Сначала x, потом y, потом z
     public static Coord rotate(Coord a, double alpha, double beta, double gamma){
         double sa=Math.sin(alpha);
         double ca=Math.cos(alpha);
@@ -73,7 +74,7 @@ public class MathTools {
         return new Coord(output[0][0],output[0][1],output[0][2]);
     }
 
-    //умножение матриц a(x*y) и b(y*z)
+    // умножение матриц a(x*y) и b(y*z)
     public static double[][] matMul(double[][] a, double[][] b, int x, int y, int z){
         double[][] rez=new double[x][z];
         for(int i=0; i<x; i++)
@@ -83,7 +84,7 @@ public class MathTools {
         return rez;
     }
 
-    //сложение матриц a(x*y) и b(x*y)
+    // сложение матриц a(x*y) и b(x*y)
     public static double[][] matSum(double[][] a, double[][] b, int x, int y){
         double[][] rez=new double[x][y];
         for(int i=0; i<x; i++)
@@ -92,7 +93,7 @@ public class MathTools {
         return rez;
     }
 
-    //умножение матрицы a(x*y) на число b
+    // умножение матрицы a(x*y) на число b
     public static double[][] scalMul(double[][] a, int x, int y, double b){
         double[][] rez=new double[x][y];
         for(int i=0; i<x; i++)
@@ -101,7 +102,7 @@ public class MathTools {
         return rez;
     }
 
-    //обратная матрица
+    // обратная матрица
     public static double[][] inversion(double[][] A, int N) {
         double temp;
 
@@ -148,7 +149,7 @@ public class MathTools {
         return E;
     }
 
-    //точка в новой системе координат
+    // точка в новой системе координат. Получает на вход координаты точки, обратную матрицу перехода, начало координат в новой системе
     public static Coord ncs(Coord coord, double[][] a, double[][] o){
         double[][] oldCoord=new double[][]{
             {coord.getX()},

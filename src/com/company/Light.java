@@ -1,7 +1,10 @@
 package com.company;
 
+// класс света в трёхмерном пространстве
 public class Light {
+    // вектор направления света. может быть любой длины
     private Coord direction;
+    // цвет света. для получения яркости [0,1] необходимо каждую компоненту разделить на 255
     private Color color;
 
     public Light(){

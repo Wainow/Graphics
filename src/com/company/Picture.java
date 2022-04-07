@@ -1,10 +1,12 @@
 package com.company;
 
-// двумерное изображение
+// класс двумерного изображения
 public class Picture {
-    // размеры
+    // ширина и высота
     private int w;
     private int h;
+
+    // начальное заполнение z-буфера
     private static double z0=Math.pow(10,4);
 
     // двумерный массив цветов
